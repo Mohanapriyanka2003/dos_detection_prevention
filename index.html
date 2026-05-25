@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoS / DDoS Attack Detection & Prevention Simulator</title>
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Premium Cyber Glassmorphic Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="cyber-badge">SYSTEM SECURE</div>
+                <h1>DoS / DDoS Defense Core</h1>
+            </div>
+            <div class="system-status-indicator">
+                <span class="status-dot online"></span>
+                <span id="global-status-text">NETWORK SECURE</span>
+            </div>
+        </header>
+
+        <!-- Main Layout Grid -->
+        <main class="app-grid">
+            
+            <!-- Left Side: Controls & Rules -->
+            <section class="grid-column left-controls">
+                
+                <!-- Panel 1: Simulation Controller & Traffic Injector -->
+                <div class="cyber-card glassmorphic">
+                    <div class="card-header">
+                        <h2>Traffic Generator Panel</h2>
+                        <span class="pulse-icon red-pulse"></span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Legitimate User Traffic Slider -->
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="clean-traffic-rate">Legitimate Client Traffic</label>
+                                <span class="rate-indicator" id="clean-rate-val">20 PPS</span>
+                            </div>
+                            <input type="range" id="clean-traffic-rate" min="0" max="100" value="20" step="5">
+                            <span class="control-help">Simulates normal, green user traffic accessing the web services.</span>
+                        </div>
+
+                        <hr class="cyber-divider">
+
+                        <!-- Attack Vectors -->
+                        <div class="control-group">
+                            <label class="control-label">Malicious Attack Vector</label>
+                            <div class="radio-tile-group">
+                                <label class="radio-tile-label">
+                                    <input type="radio" name="attack-vector" value="none" checked>
+                                    <div class="radio-tile">
+                                        <span>NONE</span>
+                                    </div>
+                                </label>
+                                <label class="radio-tile-label">
+                                    <input type="radio" name="attack-vector" value="syn">
+                                    <div class="radio-tile">
+                                        <span>SYN FLOOD</span>
+                                    </div>
+                                </label>
+                                <label class="radio-tile-label">
+                                    <input type="radio" name="attack-vector" value="udp">
+                                    <div class="radio-tile">
+                                        <span>UDP FLOOD</span>
+                                    </div>
+                                </label>
+                                <label class="radio-tile-label">
+                                    <input type="radio" name="attack-vector" value="http">
+                                    <div class="radio-tile">
+                                        <span>HTTP FLOOD</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Attack Rate Slider -->
+                        <div class="control-group" id="attack-rate-container" style="display:none;">
+                            <div class="control-header">
+                                <label for="attack-traffic-rate">Attack Intensity</label>
+                                <span class="rate-indicator alert-text" id="attack-rate-val">500 PPS</span>
+                            </div>
+                            <input type="range" id="attack-traffic-rate" min="100" max="2000" value="500" step="50">
+                            <span class="control-help">PPS (Packets Per Second) sent by the attacking virtual machine node.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: iptables Mitigation Shield -->
+                <div class="cyber-card glassmorphic">
+                    <div class="card-header">
+                        <h2>Firewall Rules (iptables)</h2>
+                        <span class="shield-badge" id="shield-badge-state">IDS DISARMED</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Toggle Defensive Flags -->
+                        <div class="toggle-group">
+                            <label class="switch-container">
+                                <input type="checkbox" id="toggle-syn-cookies">
+                                <span class="slider round"></span>
+                            </label>
+                            <div class="toggle-label-group">
+                                <span class="toggle-title">TCP SYN Cookies Defense</span>
+                                <span class="toggle-desc">Mitigates SYN Floods by eliminating TCP backlog queue allocations.</span>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <label class="switch-container">
+                                <input type="checkbox" id="toggle-rate-limit">
+                                <span class="slider round"></span>
+                            </label>
+                            <div class="toggle-label-group">
+                                <span class="toggle-title">Interactive Rate Limiting</span>
+                                <span class="toggle-desc">Accept connections within limit, dropping aggressive flows.</span>
+                            </div>
+                        </div>
+
+                        <hr class="cyber-divider">
+
+                        <!-- Custom IP Drop Rules -->
+                        <div class="firewall-rule-creator">
+                            <label for="block-ip-input">Create Block Rule (iptables -A INPUT -s [IP] -j DROP)</label>
+                            <div class="ip-input-row">
+                                <input type="text" id="block-ip-input" placeholder="e.g. 192.168.1.100" class="cyber-input">
+                                <button id="add-block-rule-btn" class="cyber-btn alert-btn">BLOCK IP</button>
+                            </div>
+                        </div>
+
+                        <!-- Active Rules Table -->
+                        <div class="active-rules-container">
+                            <h3>Active Firewall Table</h3>
+                            <div class="rules-scrollable">
+                                <table class="cyber-table" id="iptables-rules-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rule Action</th>
+                                            <th>Conditions</th>
+                                            <th>Counter</th>
+                                            <th>Ctrl</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Injected by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button id="flush-rules-btn" class="cyber-btn secondary-btn">FLUSH ALL RULES</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            
+            <!-- Middle & Right Side: Visualizers, IDS Monitor, and Terminal -->
+            <section class="grid-column right-visuals">
+                
+                <!-- Row 1: Network Topology Map (Live Canvas Simulation) -->
+                <div class="cyber-card glassmorphic network-topology-card">
+                    <div class="card-header">
+                        <h2>Real-Time Network Topology & Active Packet Flow</h2>
+                        <div class="network-legend">
+                            <span class="legend-item"><span class="legend-dot green"></span> Legitimate</span>
+                            <span class="legend-item"><span class="legend-dot red"></span> Attack</span>
+                            <span class="legend-item"><span class="legend-dot gray"></span> Dropped</span>
+                        </div>
+                    </div>
+                    <div class="card-body canvas-container">
+                        <canvas id="topology-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Row 2: Double Column (Analytics & Diagnostics) -->
+                <div class="double-visual-row">
+                    
+                    <!-- Left: Intrusion Detection System Analytics -->
+                    <div class="cyber-card glassmorphic half-card">
+                        <div class="card-header">
+                            <h2>IDS Diagnostics (Traffic Anomaly)</h2>
+                            <span class="badge" id="risk-badge">RISK: LOW</span>
+                        </div>
+                        <div class="card-body ids-diagnostics">
+                            <div class="metric-row">
+                                <div class="metric-block">
+                                    <span class="metric-label">Total Rate</span>
+                                    <span class="metric-val" id="ids-total-pps">0 pps</span>
+                                </div>
+                                <div class="metric-block">
+                                    <span class="metric-label">Source IP Entropy</span>
+                                    <span class="metric-val" id="ids-entropy">0.000</span>
+                                </div>
+                            </div>
+
+                            <!-- Entropy Gauge & Level Explanation -->
+                            <div class="entropy-meter-container">
+                                <div class="meter-bar-label">
+                                    <span>IP Distribution Profile</span>
+                                    <span id="entropy-profile-label">Legitimate Balance</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div class="meter-fill" id="entropy-fill" style="width: 0%;"></div>
+                                </div>
+                                <span class="meter-help">Entropy approaches 0 during focused, single-source DoS attacks, and peaks during spoofed DDoS.</span>
+                            </div>
+
+                            <hr class="cyber-divider">
+
+                            <!-- IDS Alert Logger -->
+                            <div class="ids-alerts-container">
+                                <h3>Intrusion Alerts Console</h3>
+                                <div class="alert-log" id="ids-alert-log">
+                                    <div class="alert-placeholder">✔ Standing by. Monitoring network integrity...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Server Metrics & System Stress -->
+                    <div class="cyber-card glassmorphic half-card">
+                        <div class="card-header">
+                            <h2>Target Web Server Diagnostics</h2>
+                            <span class="badge green-badge" id="server-status-badge">ONLINE</span>
+                        </div>
+                        <div class="card-body server-diagnostics">
+                            
+                            <!-- Resource Gauges -->
+                            <div class="gauges-container">
+                                <div class="circular-gauge-block">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="circle" id="cpu-gauge-path" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <text x="18" y="20.35" class="percentage" id="cpu-gauge-text">0%</text>
+                                    </svg>
+                                    <span class="gauge-label">Server CPU Load</span>
+                                </div>
+                                
+                                <div class="circular-gauge-block">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="circle" id="conn-gauge-path" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="#38bdf8" />
+                                        <text x="18" y="20.35" class="percentage" id="conn-gauge-text">0%</text>
+                                    </svg>
+                                    <span class="gauge-label">TCP Sockets Capacity</span>
+                                </div>
+                            </div>
+
+                            <hr class="cyber-divider">
+
+                            <!-- Performance Chart -->
+                            <div class="chart-container">
+                                <canvas id="metrics-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Row 3: Wireshark Live Packet Monitor -->
+                <div class="cyber-card glassmorphic wireshark-monitor-card">
+                    <div class="card-header">
+                        <h2>Wireshark Live Packet sniffer (Simulated Interface)</h2>
+                        <div class="console-controls">
+                            <button id="toggle-sniff-btn" class="cyber-btn active-btn">PAUSE SNIFFING</button>
+                            <button id="clear-sniff-btn" class="cyber-btn secondary-btn">CLEAR PACKETS</button>
+                        </div>
+                    </div>
+                    <div class="card-body terminal-body">
+                        <div class="wireshark-header-row">
+                            <span class="ws-col col-num">No.</span>
+                            <span class="ws-col col-time">Time</span>
+                            <span class="ws-col col-src">Source IP</span>
+                            <span class="ws-col col-dst">Destination IP</span>
+                            <span class="ws-col col-proto">Protocol</span>
+                            <span class="ws-col col-len">Length</span>
+                            <span class="ws-col col-info">Info Summary</span>
+                        </div>
+                        <div class="wireshark-rows-container" id="packet-console">
+                            <!-- Populated in app.js -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
